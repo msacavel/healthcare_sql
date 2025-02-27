@@ -1,0 +1,80 @@
+
+SELECT * FROM healthcare.healthcare;
+
+-- Basic Data Checks
+
+-- View column names and data types:
+DESC healthcare.healthcare;
+
+
+-- Count total records:
+SELECT COUNT(*) as total_number
+FROM healthcare.healthcare;
+
+-- Patient Demographics
+
+-- Count patients by gender:
+SELECT gender, COUNT(*)  AS total_patients
+FROM healthcare.healthcare 
+GROUP BY gender;
+
+-- Age distribution:
+SELECT age, COUNT(*) AS total_patients 
+FROM healthcare.healthcare 
+GROUP BY age 
+ORDER BY age;
+
+-- Diagnosis Insights
+
+-- Most common diagnoses:
+SELECT Medical_Condition, COUNT(*) AS count 
+FROM healthcare.healthcare 
+GROUP BY Medical_Condition 
+ORDER BY count DESC ;
+
+-- Patients with multiple diagnoses:
+SELECT name, COUNT(Medical_Condition) AS disease_count 
+FROM healthcare.healthcare 
+GROUP BY name 
+HAVING disease_count > 1;
+
+-- Cost & Billing Analysis
+
+-- Average cost per diagnosis:
+SELECT Medical_Condition, AVG(Billing_Amount) AS avg_cost 
+FROM healthcare.healthcare 
+GROUP BY Medical_Condition
+ORDER BY avg_cost DESC;
+
+-- Most expensive treatments:
+SELECT Medication, 
+AVG(Billing_Amount) AS avg_cost 
+FROM healthcare.healthcare 
+GROUP BY Medication 
+ORDER BY avg_cost DESC ;
+
+-- Employers performance
+
+-- Patients per doctor
+select Doctor, 
+count(Name) AS Total_Patients
+from healthcare.healthcare
+group by Doctor
+order by count(Name) desc;
+
+-- Revenue per Doctor
+select Doctor, 
+count(Name) AS Total_Patients, 
+sum(Billing_Amount) AS Total_Revenue
+from healthcare.healthcare
+group by Doctor
+order by sum(Billing_Amount) desc;
+
+-- Average Billing Amount per Doctor
+SELECT Doctor, 
+COUNT(Name) AS Total_Patients, 
+SUM(Billing_Amount) AS Total_Revenue, 
+AVG(Billing_Amount) AS Avg_Revenue_Per_Patient
+FROM healthcare.healthcare
+GROUP BY Doctor
+ORDER BY Avg_Revenue_Per_Patient DESC;
